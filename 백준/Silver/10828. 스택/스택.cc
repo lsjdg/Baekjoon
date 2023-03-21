@@ -45,9 +45,7 @@ public:
 	void deleteFront()
 	{
 		Node* delNode = this->head->next;
-		int delValue = delNode->value;
 		this->head->next = delNode->next;
-		cout << delValue << '\n';
 		size--;
 	}
 	friend class Stack;
@@ -84,17 +82,12 @@ public:
 	}
 	void pop()
 	{
-		if (empty())
-			cout << -1 << '\n';
-		else
-		{
-			ll.deleteFront();
-			size--;
-		}
+		ll.deleteFront();
+		size--;
 	}
-	void sizePrint()
+	int getSize()
 	{
-		cout << size << '\n';
+		return this->size;
 	}
 };
 
@@ -104,7 +97,7 @@ int main()
 	Stack st = Stack();
 	string s;
 	cin >> n;
-	
+
 	for (int i{ 0 }; i < n; i++)
 	{
 		cin >> s;
@@ -127,11 +120,17 @@ int main()
 		}
 		else if (s == "pop")
 		{
-			st.pop();
+			if (st.empty())
+				cout << -1 << '\n';
+			else
+			{
+				cout << st.top() << '\n';
+				st.pop();
+			}
 		}
 		else if (s == "size")
 		{
-			st.sizePrint();
+			cout << st.getSize() << '\n';
 		}
 	}
 }
