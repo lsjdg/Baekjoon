@@ -1,14 +1,69 @@
+
 #include <iostream>
 using namespace std;
 
-int n = 10000;
+class Node
+{
+private:
+	Node* next;
+	int value;
+public:
+	Node()
+	{
+		this->next = nullptr;
+		value = 0;
+	}
+	friend class LinkedList;
+	friend class Queue;
+};
+
+class LinkedList
+{
+private:
+	Node* head;
+	Node* tail;
+	int size;
+public:
+	LinkedList()
+	{
+		this->head = new Node;
+		this->tail = new Node;
+		this->head->next = tail;
+		size = 0;
+	}
+	bool empty()
+	{
+		return this->size == 0;
+	}
+	void removeFront()
+	{
+		Node* removeNode = this->head->next;
+		this->head->next = removeNode->next;
+		size--;
+	}
+	void addBack(int x)
+	{
+		Node* addNode = new Node;
+		addNode->value = x;
+		Node* curNode = this->head;
+		for (int i{ 0 }; i < this->size; i++)
+		{
+			curNode = curNode->next;
+		}
+		curNode->next = addNode;
+		addNode->next = this->tail;
+		size++;
+	}
+	friend class Queue;
+};
 class Queue
 {
 public:
-	int arr[10001];
+	int arr[10000];
 	int frontIdx = 0;
 	int rearIdx = -1;
 	int size = 0;
+	LinkedList ll = LinkedList();
 
 	void printSize()
 	{
@@ -18,17 +73,12 @@ public:
 	{
 		return this->size == 0;
 	}
-	void updateIndex()
-	{
-		frontIdx %= n;
-		rearIdx %= n;
-	}
 	void front()
 	{
 		if (empty())
 			cout << -1 << '\n';
 		else
-			cout << arr[frontIdx] << '\n';
+			cout << ll.head->next->value << '\n';
 
 	}
 	void rear()
@@ -36,19 +86,21 @@ public:
 		if (empty())
 			cout << -1 << '\n';
 		else
-			cout << arr[rearIdx] << '\n';
+		{
+			Node* curNode = ll.head;
+			for (int i{ 0 }; i < this->size; i++)
+			{
+				curNode = curNode->next;
+			}
+			cout << curNode->value << '\n';
+		}
+
 	}
 	void enQueue(int x)
 	{
-		if (this->size >= n)
-			cout << "full" << '\n';
-		else
-		{
-			rearIdx++;
-			updateIndex();
-			arr[rearIdx] = x;
-			size++;
-		}
+		rearIdx++;
+		ll.addBack(x);
+		size++;
 	}
 	void deQueue()
 	{
@@ -56,9 +108,9 @@ public:
 			cout << -1 << '\n';
 		else
 		{
-			cout << arr[frontIdx] << '\n';
 			frontIdx++;
-			updateIndex();
+			front();
+			ll.removeFront();
 			size--;
 		}
 	}
@@ -67,9 +119,9 @@ public:
 int main()
 {
 	Queue q = Queue();
-	int n;
-	cin >> n;
-	while (n--)
+	int test;
+	cin >> test;
+	while (test--)
 	{
 		string s;
 		cin >> s;
