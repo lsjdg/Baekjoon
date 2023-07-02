@@ -18,13 +18,13 @@ void bfs(int v)
     while (!q.empty())
     {
         int top = q.front().first;
-        int steps = q.front().second;
+        int depth = q.front().second;
         q.pop();
 
         if (top == target)
         {
             arrive = true;
-            d = steps;
+            d = depth;
             return;
         }
 
@@ -33,7 +33,7 @@ void bfs(int v)
             if (!visited[i])
             {
                 visited[i] = true;
-                q.push({ i, steps + 1 });
+                q.push({ i, depth + 1 });
             }
         }
     }
