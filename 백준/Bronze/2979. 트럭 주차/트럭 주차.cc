@@ -3,26 +3,24 @@
 
 using namespace std;
 
-int main(){
+int main() {
     int a, b, c;
     cin >> a >> b >> c;
     b *= 2;
     c *= 3;
-    int cnt = 0, time = 1, cost = 0;
-    vector<pair<int, int>> trucks;
-    for (int i = 0; i<3; i++){
+    vector<int> cnt(101, 0);
+    int cost = 0;
+
+    for (int i = 0; i < 3; i++) {
         int in, out;
         cin >> in >> out;
-        trucks.push_back(make_pair(in, out));
-    }
-    while (time <= 100){
-        for (int i = 0; i<3; i++){
-            if (time == trucks[i].first)
-                cnt++;
-            if (time == trucks[i].second)
-                cnt--;
+        for (int j = in; j < out; j++) {
+            cnt[j]++;
         }
-        switch (cnt) {
+    }
+
+    for (int i = 1; i <= 100; i++) {
+        switch (cnt[i]) {
             case 1:
                 cost += a;
                 break;
@@ -33,7 +31,6 @@ int main(){
                 cost += c;
                 break;
         }
-        time++;
     }
 
     cout << cost;
