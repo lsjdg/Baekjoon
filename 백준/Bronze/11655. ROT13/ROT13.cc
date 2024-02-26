@@ -1,31 +1,21 @@
 #include <iostream>
 #include <string>
+#include <cctype>
 
 using namespace std;
 
 char rot(char c) {
-    int start;
-    if (c >= 'A' && c <= 'Z') {
-        start = 'A';
-    } else if (c >= 'a' && c <= 'z') {
-        start = 'a';
-    } else {
-        return c;
+    if (isalpha(c)) {
+        char start = isupper(c) ? 'A' : 'a';
+        return (c - start + 13) % 26 + start;
     }
-
-    int n = (int) c;
-    n -= start;
-    n += 13;
-    n %= 26;
-    n += start;
-
-    return (char) n;
+    return c;
 }
 
 int main() {
     string s;
     getline(cin, s);
-    for (size_t i = 0; i < s.size(); i++) {
-        cout << rot(s[i]);
+    for (char c : s) {
+        cout << rot(c);
     }
 }
